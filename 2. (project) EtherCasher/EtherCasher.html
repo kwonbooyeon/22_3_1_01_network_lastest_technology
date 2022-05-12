@@ -1,0 +1,426 @@
+<html> <head>
+<script src='web3.min.js'></script>
+<script type="text/javascript"> 
+var accounts;
+var constructInstance;
+var resultbox;
+
+window.addEventListener('load', async () => {
+	if (window.ethereum) {
+		window.alert('Modern dapp browsers')
+	} else if (window.web3) {
+		window.alert('Legacy dapp browsers')
+	} else {
+		window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
+	}
+
+  let btn = document.getElementById("btn");
+  btn.addEventListener('click', btnClicked);
+
+});
+
+async function btnClicked() {
+	alert("btnClicked()");
+	window.accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+	const showAccount = document.querySelector('.showAccount');
+	showAccount.innerHTML = accounts[0];
+	
+	var abiobj =[
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_price",
+				"type": "uint256"
+			}
+		],
+		"name": "addOrder",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "collect",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "init",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "payment",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_count",
+				"type": "uint256"
+			}
+		],
+		"name": "setCount",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"stateMutability": "payable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [],
+		"name": "currCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "customer",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getBlance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address payable",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "thisBlance",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "totalPrice",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+
+
+	var address = "0x60922e861A9876ADb1Fdc9094f9bbDa6512E1dB9";
+
+
+window.web3 = new Web3(window.ethereum);
+contractInstance = await new window.web3.eth.Contract(abiobj, address);
+
+  let btn = document.getElementById("addOrder");
+	  btn.addEventListener('click', addOrderClicked);
+	  btn = document.getElementById("payment");
+	  btn.addEventListener('click', paymentClicked);
+	  btn = document.getElementById("setCount");
+	  btn.addEventListener('click', setCountClicked);
+	  btn = document.getElementById("currCount");
+          btn.addEventListener('click', currCountClicked);
+	  btn = document.getElementById("customer");
+	  btn.addEventListener('click', customerClicked);
+	  btn = document.getElementById("getBlance");
+	  btn.addEventListener('click', getBlanceClicked);
+	  btn = document.getElementById("thisBlance");
+          btn.addEventListener('click', thisBlanceClicked);
+	  btn = document.getElementById("owner");
+	  btn.addEventListener('click', ownerClicked);
+	  btn = document.getElementById("totalPrice");
+          btn.addEventListener('click', totalPriceClicked);
+	  btn = document.getElementById("totalCount");
+          btn.addEventListener('click', totalCountClicked);
+	  btn = document.getElementById("clear");
+          btn.addEventListener('click', initClicked);
+	  btn = document.getElementById("collect");
+          btn.addEventListener('click', collectClicked);
+	                                                                                                                                         resultbox = document.getElementById("resultbox");
+}
+
+async function addOrderClicked() {
+  if (contractInstance != null) {
+    try {
+
+        let valtxt = document.getElementById("price");
+        let val = valtxt.value;
+	let value = await contractInstance.methods.addOrder(val).send({from:accounts[0]});
+	resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+async function paymentClicked() {
+  if (contractInstance != null) {
+    try {
+	let valtxt = document.getElementById("paing");
+        let val = valtxt.value;
+	let value = await contractInstance.methods.payment().send({from:accounts[0],value:val});
+	resultbox.innerHTML = value;
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+async function totalCountClicked() {
+  if (contractInstance != null) {
+    try {
+	const value = await contractInstance.methods.totalCount().call();
+	resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+async function setCountClicked() {
+  if (contractInstance != null) {
+    try {
+        let valtxt = document.getElementById("count");
+        let val = valtxt.value;
+        let value = await contractInstance.methods.setCount(val).send({from:accounts[0]});
+	resultbox.innerHTML = value;
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+async function currCountClicked() {
+  if (contractInstance != null) {
+    try {
+        const value = await contractInstance.methods.currCount().call();
+        resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+async function customerClicked() {
+  if (contractInstance != null) {
+    try {
+	const value = await contractInstance.methods.customer().call();
+	resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+async function getBlanceClicked() {
+  if (contractInstance != null) {
+    try {
+	const value = await contractInstance.methods.getBlance().call();
+	resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+
+async function thisBlanceClicked() {
+  if (contractInstance != null) {
+    try {
+        const value = await contractInstance.methods.thisBlance().call();
+        resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+
+async function ownerClicked() {
+  if (contractInstance != null) {
+    try {
+	const value = await contractInstance.methods.owner().call();
+	resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+
+async function totalPriceClicked() {
+  if (contractInstance != null) {
+    try {
+        const value = await contractInstance.methods.totalPrice().call();
+        resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+
+async function initClicked() {
+  if (contractInstance != null) {
+    try {
+        const value = await contractInstance.methods.init().send({from:accounts[0]});;
+        resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+
+async function collectClicked() {
+  if (contractInstance != null) {
+    try {
+        const value = await contractInstance.methods.collect().send({from:accounts[0]});;
+        resultbox.innerHTML = value;
+
+
+    } catch (error) {
+        resultbox.innerHTML = "error occured";
+        console.log(error);
+    }
+  }
+}
+
+
+
+</script>
+</head> <body>
+<h1> Project Name: EtherCasher </h1>
+<h4> Team Name: Kwon Buyeon (20203030)</h4>
+<a href="https://youtu.be/_23N589mtM0"> Project 1 Demo Video </a>
+<br/>
+<input type="button" id="btn" value="connect">
+<h2>Account: <span class="showAccount"></span></h2>
+<input type="button" id="addOrder" value="addOrder() [price]">
+<input type="text" id="price" value=""> wei
+<br/>
+<input type="button" id="setCount" value="setCount() [count]">
+<input type="text" id="count" value=""> 
+<br/>
+<input type="button" id="currCount" value="currCount">
+<br/>----------------------------------------<br/>
+<input type="button" id="totalPrice" value="totalPrice">
+<input type="button" id="totalCount" value="totalCount">
+<br/>
+<input type="button" id="payment" value="payment"> pay: <input type="text" id="paing" value=""> wei
+<br/>----------------------------------------<br/>
+<input type="button" id="customer" value="customer">
+<input type="button" id="getBlance" value="getBalance() [wei]">
+<br/>
+<input type="button" id="owner" value="owner">
+<input type="button" id="thisBlance" value="thisBalance() [wei]">
+<br/>----------------------------------------<br/>
+<input type="button" id="clear" value="init">
+<input type="button" id="collect" value="collect">
+<br/>
+Result: <span id="resultbox"> </span>
+
+</body> </html>
+
+
+
+
+
+
