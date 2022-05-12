@@ -1,4 +1,4 @@
-#network_lastest_technology(네트워크 최신기술)(이상환,김영만 교수님) (2022년 3학년 2학기)
+# network_lastest_technology(네트워크 최신기술)(이상환,김영만 교수님) (2022년 3학년 2학기)
 
 1. solidity 오류수정(버전 업)
 
