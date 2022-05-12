@@ -5,3 +5,7 @@
 - 첨부한 파일을 Solidity version 0.8.13에서 컴파일할 때 error나 warning이 없도록 수정해서 제출하시오.
 
 수정한 후 deploy해서 정상적으로 동작해야 함. 
+
+2. (project) EtherCasher
+
+- metamask를 이용한 smart contract(이더리움 스마트계약) 프로그램 제작
